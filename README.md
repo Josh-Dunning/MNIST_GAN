@@ -5,3 +5,5 @@ To run:
 
 > ./trainGAN
 
+Adjust parameters in run.py
+
