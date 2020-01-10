@@ -1,9 +1,18 @@
 Generative Adversarial Network for MNIST Digits
 ===============================================
 
-To run:
+Adjust parameters in run.py
+
+To train
+--------
 
 > ./trainGAN
 
-Adjust parameters in run.py
+
+To test
+-------
+
+> ./trainGAN
+
+
 
