@@ -56,6 +56,7 @@ signal.signal(signal.SIGINT, signal_handler)
 ######## MODEL PARAMETERS ########
 
 # Overall parameters
+target_num = 1
 epochs = 30
 trainset_batch_size = 256
 testset_batch_size = 1024
@@ -63,17 +64,17 @@ generator_input_noise = 100
 generator_input_sampler = lambda m, n: torch.empty(m, n).normal_(mean=0.5,std=0.5)
 
 # Discriminator parameters
-load_discriminator_state = True
-discriminator_save_path = './saves/discriminator/mnist8_full'
+load_discriminator_state = False
+discriminator_save_path = './saves/discriminator/mnist' + str(target_num) + '_full'
 d_steps = 100
-dlr = 1e-6  # (DLR) - Discriminator learning rate
+dlr = 1e-7  # (DLR) - Discriminator learning rate
 d_loss_fn = nn.MSELoss()
 
 # Generator parameters
-load_generator_state = True
-generator_save_path = './saves/generator/mnist8_full'
+load_generator_state = False
+generator_save_path = './saves/generator/mnist' + str(target_num) + '_full'
 g_steps = 200
-glr = 1e-5  # (GLR) - Generator learning rate
+glr = 1e-6  # (GLR) - Generator learning rate
 g_loss_fn = nn.MSELoss()
 
 ##################################
@@ -108,7 +109,7 @@ def trainDiscriminator(e):
         if i % 10 == 0 or i + 1 == d_steps:
             print('Discriminator Train - Epoch %d, Batch: %d, Real Loss: %f, Fake Loss: %f' % (e + 1, i, real_loss.detach().cpu().item(), fake_loss.detach().cpu().item()))
 
-        if i == 0 and not e % 2:
+        if i == 0:
             f, axarr = plt.subplots(3, 2)
             axarr[0, 0].imshow(real_images[0].reshape(32, 32))
             axarr[0, 1].imshow(fake_images[0].reshape(32, 32))
@@ -117,7 +118,7 @@ def trainDiscriminator(e):
             axarr[2, 0].imshow(real_images[2].reshape(32, 32))
             axarr[2, 1].imshow(fake_images[2].reshape(32, 32))
             plt.show(block=False)
-            plt.pause(1)
+            plt.pause(5)
             plt.close()
 
         real_loss.backward()
@@ -178,7 +179,7 @@ def main():
     global discriminator, d_optim, generator, g_optim, trainset_batches, trainset_batches_it, testset, testset_batches, loaded
 
     # Load data and setup models
-    trainset, trainsampler, testset, testsampler = loadData()
+    trainset, trainsampler, testset, testsampler = loadData(target_num)
     discriminator = buildDiscriminator()
     generator = buildGenerator()
     loaded = True

@@ -19,11 +19,11 @@ class OneClassSampler(torch.utils.data.sampler.Sampler):
     def __len__(self):
         return len(self.data_source)
 
-def loadData():
+def loadData(target_num):
 	#data_transform = transforms.Compose([transforms.Grayscale(num_output_channels=1), transforms.Resize((32, 32)), transforms.ToTensor()])
 	#label_transform = transforms.Compose([])
 	data_transform = transforms.Compose([transforms.Resize((32, 32)), transforms.ToTensor(), transforms.Normalize(mean=(0.5,), std=(0.5,))])
-	label_transform = lambda lbl: random.uniform(0.8, 0.99) if lbl == 8 else 0
+	label_transform = lambda lbl: random.uniform(0.8, 0.99) if lbl == target_num else 0
 
 	trainset = datasets.MNIST(root='./data', train=True, download=False, transform=data_transform, target_transform=label_transform)
 	testset = datasets.MNIST(root='./data', train=False, download=False, transform=data_transform, target_transform=label_transform)

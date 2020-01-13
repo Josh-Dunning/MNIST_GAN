@@ -8,10 +8,11 @@ from matplotlib import pyplot as plt
 ###################################
 ########### PARAMETERS ############
 
+target_num = 1
 #generator_input_sampler = lambda m, n: torch.empty(m, n).normal_(mean=0.5,std=0.5)
 generator_input_sampler = lambda m, n: torch.rand(m, n)
 #generator_input_sampler = lambda m, n: torch.zeros(m, n)
-generator_save_path = './saves/generator/mnist8_full'
+generator_save_path = './saves/generator/mnist' + str(target_num) + '_full'
 generator_input_noise = 100
 rows = 5
 cols = 8
